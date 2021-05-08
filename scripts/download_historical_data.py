@@ -5,7 +5,7 @@ api_key = os.getenv('API_KEY')
 api_secret = os.getenv('API_SECRET')
 DAY_MS = 8.64E+7
 
-def download_historica_data(token, time_start, time_end):
+def download_historical_data(token, time_start, time_end):
     time_diff = time_end - time_start
     days = time_diff / DAY_MS
 
