@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from scripts import download_historical_data as dhd
 import time
 import os
-DAY_SEC = 86400
 
 # Coins to watch
 watchlist = ['DOGEUSDT', 'BTCUSDT', 'ETHUSDT']
@@ -21,5 +20,5 @@ client = Client(api_key, api_secret)
 # Get data for each token
 current_time = time.time()
 for token in watchlist:
-    dhd.download_historical_data(client, token, time_interval, current_time - DAY_SEC * 5, current_time)
+    dhd.download_historical_data(client, token, time_interval, current_time - 86400 * 5, current_time)
 

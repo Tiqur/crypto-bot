@@ -1,5 +1,7 @@
 from binance.client import Client
 from datetime import datetime, timezone
+from models import *
+from peewee import *
 import math
 import os
 DAY_SEC = 86400
@@ -21,7 +23,7 @@ def download_historical_data(client, token, interval, time_start, time_end):
         historical_data = client.get_historical_klines(token, interval, str(start), str(end))
 
         # Extract OHLVC from data
-        for ohlcv in historical_data:
+        for data in historical_data:
             [
                 open_time,
                 open,
@@ -35,7 +37,7 @@ def download_historical_data(client, token, interval, time_start, time_end):
                 taker_buy_base_asset_volume,
                 taker_buy_base_quote_asset_volume,
                 ignore
-            ] = ohlcv
+            ] = data
 
 
         # Insert data to db
