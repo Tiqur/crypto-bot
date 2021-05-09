@@ -1,6 +1,6 @@
 from binance.client import Client
 from dotenv import load_dotenv
-from scripts import download_historical_data as dhd
+from scripts.download_historical_data import *
 import time
 import os
 
@@ -20,5 +20,5 @@ client = Client(api_key, api_secret)
 # Get data for each token
 current_time = time.time()
 for token in watchlist:
-    dhd.download_historical_data(client, token, time_interval, current_time - 86400 * 5, current_time)
+    download_historical_data(client, token, time_interval, current_time - 86400 * 5, current_time)
 

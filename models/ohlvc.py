@@ -2,7 +2,7 @@
 ohlcv_db = SqliteDatabase('data.db')
 
 # ohlcv table
-class OHLVC(Model):
+class ohlcv(Model):
     token: TextField()
     interval: SmallIntegerField()
     open_time: BigIntegerField()
