@@ -1,26 +1,27 @@
-from datetime import datetime
+from binance.client import Client
+from datetime import datetime, timezone
+import math
 import os
+DAY_SEC = 86400
 
-api_key = os.getenv('API_KEY')
-api_secret = os.getenv('API_SECRET')
-DAY_MS = 8.64E+7
 
-def download_historical_data(token, time_start, time_end):
-    time_diff = time_end - time_start
-    days = time_diff / DAY_MS
-
+def download_historical_data(client, token, interval, time_start, time_end):
+    print(f"Downloading {token} historical data...")
+    
     # Download chunks of data rather than all at once
-    while days > 0:
-        start = days * DAY_MS
-        end = (days * DAY_MS) + DAY_MS
+    while time_start < time_end:
+        start = time_start
+        end = time_start + DAY_SEC
+        days_left = math.floor((time_end - start) / DAY_SEC)
+        date_start = datetime.fromtimestamp(start, timezone.utc)
+        date_end = datetime.fromtimestamp(end, timezone.utc)
 
         # Get data from binance api
-        print(f"Downloading {token} historical data, {end / DAY_MS} -> {start / DAY_MS}...")
-        historical_data = client.get_historical_klines(token, time_interval, time_duration)
-        print(historical_data)
+        print(f"{date_start.strftime('%b %d %Y %H:%M:%S')} -> {date_end.strftime('%b %d %Y %H:%M:%S')}")
+        historical_data = client.get_historical_klines(token, interval, str(start), str(end))
 
         # Insert data to db
-        days -= 1
+        time_start += DAY_SEC
 
 
 

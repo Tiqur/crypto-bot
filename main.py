@@ -1,8 +1,9 @@
 from binance.client import Client
 from dotenv import load_dotenv
-from scripts import download_historical_data
+from scripts import download_historical_data as dhd
+import time
 import os
-
+DAY_SEC = 86400
 
 # Coins to watch
 watchlist = ['DOGEUSDT', 'BTCUSDT', 'ETHUSDT']
@@ -41,5 +42,8 @@ for token in watchlist:
         ] = ohlcv
         
         
-        
+
+
+current_time = time.time()
+dhd.download_historical_data(client, 'DOGEUSDT', time_interval, current_time - DAY_SEC * 20, current_time)
 
