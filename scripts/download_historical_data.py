@@ -1,11 +1,14 @@
 from binance.client import Client
 from datetime import datetime, timezone
-import math
+from scripts.database import *
+from models.ohlvc import *
+import math 
 import os
 DAY_SEC = 86400
 
 
 def download_historical_data(client, token, interval, time_start, time_end):
+    database = DatabaseInit()
     print(f"Downloading {token} historical data...")
     
     # Download chunks of data rather than all at once
@@ -36,6 +39,20 @@ def download_historical_data(client, token, interval, time_start, time_end):
                 taker_buy_base_quote_asset_volume,
                 ignore
             ] = data
+
+            OhlvcModel(
+                        token = token,
+                        interval = 1,
+                        open_time = open_time,
+                        open = open,
+                        high = high,
+                        low = low,
+                        close = close,
+                        volume = volume,
+                        close_time = close_time,
+                        num_of_trades = num_of_trades,
+                    ).save()
+
             
 
         # Insert data to db

@@ -1,8 +1,15 @@
 from binance.client import Client
 from dotenv import load_dotenv
 from scripts.download_historical_data import *
+from scripts.database import *
+from models.ohlvc import *
 import time
 import os
+
+# Database stuff
+db = DatabaseInit()
+db.connect()
+db.create_tables(OhlvcModel)
 
 # Coins to watch
 watchlist = ['DOGEUSDT', 'BTCUSDT', 'ETHUSDT']
