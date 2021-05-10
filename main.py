@@ -33,8 +33,8 @@ for token in watchlist:
 
     # Get max and min time intervals from database ( This will determine if the downloads can be optimized )
     # This will work assuming the records don't have gaps ( If this becomes a problem, will iterate. But would rather not for the sake of performance )
-    min = OhlcvModel.select(fn.MIN(OhlcvModel.open_time)).scalar()
-    max = OhlcvModel.select(fn.MAX(OhlcvModel.open_time)).scalar()
+    min = OhlcvModel.select(fn.MIN(OhlcvModel.open_time)).where(OhlcvModel.token == token).scalar()
+    max = OhlcvModel.select(fn.MAX(OhlcvModel.open_time)).where(OhlcvModel.token == token).scalar()
 
     # Times to download
     timeframes = []
@@ -46,7 +46,7 @@ for token in watchlist:
 
         # Download data prior to current records
         if min > time_start:
-            timeframes.append((min, time_start))
+            timeframes.append((time_start, min))
 
         # Download data from last record to current time
         if max < current_time:  # This will most likely always be true
@@ -55,5 +55,8 @@ for token in watchlist:
     else: # Else, download all records in timeframe
         timeframes.append((time_start, current_time))
 
+    # Download
     for timeframe in timeframes:
         download_historical_data(client, token, time_interval, timeframe[0], timeframe[1])
+    #download_historical_data(client, token, time_interval, current_time - 86400 * 1, current_time)
+

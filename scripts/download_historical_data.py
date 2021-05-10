@@ -41,20 +41,20 @@ def download_historical_data(client, token, interval, time_start, time_end):
                 ignore
             ] = data
 
+            # Insert data to db
             OhlcvModel(
-                    token = token,
-                    interval = 1,
-                    open_time = open_time,
-                    open = open,
-                    high = high,
-                    low = low,
-                    close = close,
-                    volume = volume,
-                    close_time = close_time,
-                    num_of_trades = num_of_trades,
-                ).save()
+                token = token,
+                interval = 1,
+                open_time = open_time,
+                open = open,
+                high = high,
+                low = low,
+                close = close,
+                volume = volume,
+                close_time = close_time,
+                num_of_trades = num_of_trades,
+            ).save()
             
-        # Insert data to db
         time_start += DAY_SEC
 
 
