@@ -15,7 +15,7 @@ db.create_tables(OhlcvModel)
 # Coins to watch
 watchlist = ['DOGEUSDT', 'BTCUSDT', 'ETHUSDT']
 time_interval = Client.KLINE_INTERVAL_1MINUTE
-days_to_download = 2
+days_to_download = 3
 
 # Load env variables
 load_dotenv()
@@ -58,5 +58,11 @@ for token in watchlist:
     # Download
     for timeframe in timeframes:
         download_historical_data(client, token, time_interval, timeframe[0], timeframe[1])
+
     #download_historical_data(client, token, time_interval, current_time - 86400 * 1, current_time)
 
+query = OhlcvModel.select().where(OhlcvModel.token == 'DOGEUSDT').order_by(OhlcvModel.open_time)
+min = OhlcvModel.select(fn.MIN(OhlcvModel.open_time)).where(OhlcvModel.token == token).scalar()
+max = OhlcvModel.select(fn.MAX(OhlcvModel.close_time)).where(OhlcvModel.token == token).scalar()
+print(len(query))
+print((max - min) / 60000)
