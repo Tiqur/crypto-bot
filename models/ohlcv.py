@@ -3,7 +3,7 @@ from scripts.database import *
 
 
 # ohlcv table
-class OhlvcModel(Model):
+class OhlcvModel(Model):
     token = TextField()
     interval = SmallIntegerField()
     open_time = BigIntegerField()

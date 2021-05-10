@@ -1,7 +1,7 @@
 from binance.client import Client
 from datetime import datetime, timezone
 from scripts.database import *
-from models.ohlvc import *
+from models.ohlcv import *
 import math 
 import os
 DAY_SEC = 86400
@@ -40,7 +40,7 @@ def download_historical_data(client, token, interval, time_start, time_end):
                 ignore
             ] = data
 
-            OhlvcModel(
+            OhlcvModel(
                         token = token,
                         interval = 1,
                         open_time = open_time,
